@@ -11,6 +11,7 @@
 		9092847B2A1C1F5300C21D8C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9092847A2A1C1F5300C21D8C /* ContentView.swift */; };
 		9092847D2A1C1F5400C21D8C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9092847C2A1C1F5400C21D8C /* Assets.xcassets */; };
 		909284802A1C1F5400C21D8C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9092847F2A1C1F5400C21D8C /* Preview Assets.xcassets */; };
+		909284872A1C388800C21D8C /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909284862A1C388800C21D8C /* RegistrationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		9092847A2A1C1F5300C21D8C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9092847C2A1C1F5400C21D8C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9092847F2A1C1F5400C21D8C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		909284862A1C388800C21D8C /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			children = (
 				909284782A1C1F5300C21D8C /* IOS_APPApp.swift */,
 				9092847A2A1C1F5300C21D8C /* ContentView.swift */,
+				909284862A1C388800C21D8C /* RegistrationView.swift */,
 				9092847C2A1C1F5400C21D8C /* Assets.xcassets */,
 				9092847E2A1C1F5400C21D8C /* Preview Content */,
 			);
@@ -137,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				909284872A1C388800C21D8C /* RegistrationView.swift in Sources */,
 				9092847B2A1C1F5300C21D8C /* ContentView.swift in Sources */,
 				909284792A1C1F5300C21D8C /* IOS_APPApp.swift in Sources */,
 			);
@@ -267,6 +271,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"IOS-APP/Preview Content\"";
+				DEVELOPMENT_TEAM = WNWHXT8226;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -295,6 +300,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"IOS-APP/Preview Content\"";
+				DEVELOPMENT_TEAM = WNWHXT8226;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
