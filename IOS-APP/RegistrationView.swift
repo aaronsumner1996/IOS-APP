@@ -21,7 +21,8 @@ struct RegistrationView: View {
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
     @State private var showPasswordMismatchAlert = false
-    
+    @State private var accessToken: String = ""
+
     private let backgroundImage: String // Image name or URL
     
     init() {
@@ -38,15 +39,12 @@ struct RegistrationView: View {
                     .frame(width: geometry.size.width, height: geometry.size.height)
                 
                 VStack {
-                    
                     Text("Create an account") // Title text
                         .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .padding(.top, 50) // Adjust top padding as needed
-                        .multilineTextAlignment(TextAlignment .leading)
-                    
-                    Spacer()
+                        .multilineTextAlignment(.leading)
                     
                     Spacer()
                     
@@ -97,6 +95,42 @@ struct RegistrationView: View {
                         if password == confirmPassword {
                             // Passwords match, perform registration
                             print("Registration successful")
+                            
+                            // Make the API request to get the access token
+                            let url = URL(string: "http://localhost:8130/users/register")!
+                            var request = URLRequest(url: url)
+                            request.httpMethod = "POST"
+                            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                            
+                            let jsonBody: [String: Any] = [
+                                "username": username,
+                                "password": password
+                            ]
+                            
+                            guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonBody) else {
+                                print("Error creating JSON data")
+                                return
+                            }
+                            
+                            request.httpBody = jsonData
+                            
+                            URLSession.shared.dataTask(with: request) { data, response, error in
+                                if let error = error {
+                                    print("Error: \(error.localizedDescription)")
+                                    return
+                                }
+                                
+                                // Parse the response and extract the access token
+                                if let data = data {
+                                    if let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                                        if let accessToken = json["access_token"] as? String {
+                                            self.accessToken = accessToken
+                                            // Use the access token in another API call or store it as needed
+                                            print("Access token: \(accessToken)")
+                                        }
+                                    }
+                                }
+                            }.resume()
                         } else {
                             // Passwords do not match, show an alert
                             showPasswordMismatchAlert = true
