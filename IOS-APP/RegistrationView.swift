@@ -21,8 +21,11 @@ struct RegistrationView: View {
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
     @State private var showPasswordMismatchAlert = false
+    @State private var showRegistrationErrorAlert = false
+    
+    @State private var errorMessage: String = ""
     @State private var accessToken: String = ""
-
+    
     private let backgroundImage: String // Image name or URL
     
     init() {
@@ -44,7 +47,9 @@ struct RegistrationView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .padding(.top, 50) // Adjust top padding as needed
-                        .multilineTextAlignment(.leading)
+                        .multilineTextAlignment(TextAlignment.leading)
+                    
+                    Spacer()
                     
                     Spacer()
                     
@@ -94,46 +99,48 @@ struct RegistrationView: View {
                         // Check if passwords match
                         if password == confirmPassword {
                             // Passwords match, perform registration
-                            print("Registration successful")
-                            
-                            // Make the API request to get the access token
                             let url = URL(string: "http://localhost:8130/users/register")!
-                            var request = URLRequest(url: url)
-                            request.httpMethod = "POST"
-                            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                            
-                            let jsonBody: [String: Any] = [
+                            let body: [String: Any] = [
                                 "username": username,
                                 "password": password
                             ]
                             
-                            guard let jsonData = try? JSONSerialization.data(withJSONObject: jsonBody) else {
-                                print("Error creating JSON data")
-                                return
-                            }
+                            let jsonData = try? JSONSerialization.data(withJSONObject: body)
                             
+                            var request = URLRequest(url: url)
+                            request.httpMethod = "POST"
+                            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
                             request.httpBody = jsonData
                             
                             URLSession.shared.dataTask(with: request) { data, response, error in
                                 if let error = error {
-                                    print("Error: \(error.localizedDescription)")
-                                    return
-                                }
-                                
-                                // Parse the response and extract the access token
-                                if let data = data {
-                                    if let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                                        if let accessToken = json["access_token"] as? String {
+                                    print("Registration request error: \(error.localizedDescription)")
+                                    errorMessage = "Registration Unsuccessful, Please try again."
+                                    showRegistrationErrorAlert = true
+                                } else if let data = data {
+                                    if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                                        if let accessToken = jsonResponse["access_token"] as? String {
+                                            // Registration successful, access token received
                                             self.accessToken = accessToken
-                                            // Use the access token in another API call or store it as needed
-                                            print("Access token: \(accessToken)")
+                                            print("Registration successful, access token: \(accessToken)")
+                                        } else {
+                                            // Access token not found in response
+                                            errorMessage = "Registration Unsuccessful, Please try again."
+                                            showRegistrationErrorAlert = true
                                         }
+                                    } else {
+                                        // Invalid JSON response
+                                        errorMessage = "Registration Unsuccessful, Please try again."
+                                        showRegistrationErrorAlert = true
                                     }
                                 }
-                            }.resume()
+                            }
+                            .resume()
+                            
                         } else {
                             // Passwords do not match, show an alert
-                            showPasswordMismatchAlert = true
+                            errorMessage = "Passwords do not match. Please try again."
+                            showRegistrationErrorAlert = true
                         }
                     }) {
                         Text("Submit")
@@ -158,6 +165,13 @@ struct RegistrationView: View {
             Alert(
                 title: Text("Password Mismatch"),
                 message: Text("The passwords entered do not match. Please try again."),
+                dismissButton: .default(Text("OK"))
+            )
+        }
+        .alert(isPresented: $showRegistrationErrorAlert) {
+            Alert(
+                title: Text("Registration Error"),
+                message: Text(errorMessage),
                 dismissButton: .default(Text("OK"))
             )
         }
