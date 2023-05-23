@@ -38,6 +38,18 @@ struct RegistrationView: View {
                     .frame(width: geometry.size.width, height: geometry.size.height)
                 
                 VStack {
+                    
+                    Text("Create an account") // Title text
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.top, 50) // Adjust top padding as needed
+                        .multilineTextAlignment(TextAlignment .leading)
+                    
+                    Spacer()
+                    
+                    Spacer()
+                    
                     TextField("", text: $username)
                         .textFieldStyle(CustomTextFieldStyle())
                         .foregroundColor(.white) // Set text color to white
